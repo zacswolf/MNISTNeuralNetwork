@@ -54,8 +54,8 @@ class Network{
     list<MatrixXd> biases;
     list<MatrixXd> weights;
     
-    ArrayXd sigmoid(ArrayXd z){
-        return 1/(1+exp(-z));
+    VectorXd sigmoid(ArrayXd z){
+        return (1/(1+exp(-z))).vector();
     }
     
     
@@ -73,8 +73,8 @@ public:
         
     }
     
-    ArrayXd feedforward(ArrayXd a){ //probably needs to be private
-        MatrixXd b;
+    VectorXd feedforward(VectorXd a){ //probably needs to be private
+		MatrixXd b;
         MatrixXd w;
         list<MatrixXd>::iterator itb = biases.begin();
         list<MatrixXd>::iterator itw = weights.begin();
@@ -102,8 +102,8 @@ public:
             //cout << "itw at " << i << " is:\n" << *itw << endl;
             cout << "a:\n" << a << endl << "w:\n" << w << endl <<"a.matrix()\n" << a.matrix() << endl << "b.array():\n" << b.array() << endl;
             
-            a = w * (a.matrix());
-            //a = sigmoid(w.row(0).dot(a.matrix()) + b.array()); //w.row(0) is there because weights is always a vector but its easier to store it as a matrix
+            
+            a = sigmoid((a * w).array() + b.array()); //w.row(0) is there because weights is always a vector but its easier to store it as a matrix
             cout << endl << endl << a << endl << endl;
             
         }
